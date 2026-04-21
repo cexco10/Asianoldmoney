@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rick Donald — Asian Coin & Banknote Buyer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-pale: #f5e9c8;
+      --ink: #1a1008;
+      --parchment: #f7f0e0;
+      --jade: #2e6b5e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--ink); color: var(--parchment); font-family: 'Cormorant Garamond', Georgia, serif; overflow-x: hidden; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(to bottom, rgba(26,16,8,0.97), rgba(26,16,8,0));
+      backdrop-filter: blur(4px);
+    }
+    .nav-logo { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--gold); letter-spacing: 0.12em; text-decoration: none; line-height: 1.2; }
+    .nav-logo span { display: block; font-size: 0.52rem; letter-spacing: 0.32em; color: rgba(201,168,76,0.55); margin-top: 2px; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'Cinzel', serif; font-size: 0.66rem; letter-spacing: 0.18em; color: var(--gold-pale); text-decoration: none; opacity: 0.75; transition: opacity 0.2s, color 0.2s; }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-cta { font-family: 'Cinzel', serif; font-size: 0.66rem; letter-spacing: 0.14em; color: var(--ink); background: var(--gold); padding: 0.55rem 1.25rem; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 5rem; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 15% 80%, rgba(139,26,26,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 45% at 85% 20%, rgba(46,107,94,0.1) 0%, transparent 60%),
+        var(--ink);
+    }
+    .coin-deco { position: absolute; border-radius: 50%; border: 1px solid rgba(201,168,76,0.12); animation: rotateSlow 40s linear infinite; }
+    .coin-deco:nth-child(1) { width: 550px; height: 550px; top: -120px; left: -180px; animation-duration: 65s; }
+    .coin-deco:nth-child(2) { width: 380px; height: 380px; bottom: -60px; right: -100px; animation-direction: reverse; animation-duration: 48s; }
+    .coin-deco:nth-child(3) { width: 220px; height: 220px; top: 28%; right: 6%; border-color: rgba(139,26,26,0.18); animation-duration: 32s; }
+    @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .hanzi-deco { position: absolute; font-family: 'Noto Serif SC', serif; font-size: 14rem; color: rgba(201,168,76,0.035); font-weight: 700; pointer-events: none; user-select: none; line-height: 1; }
+    .hanzi-deco.left { left: -2.5rem; top: 50%; transform: translateY(-50%); }
+    .hanzi-deco.right { right: -2.5rem; top: 50%; transform: translateY(-50%); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+    .hero-title { font-family: 'Cinzel', serif; font-size: clamp(2.6rem, 8vw, 5.5rem); font-weight: 600; line-height: 1.05; color: var(--gold-pale); margin-bottom: 0.3rem; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+    .hero-title span { color: var(--gold); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+    .hero-sub { font-size: clamp(1.1rem, 3vw, 1.45rem); font-style: italic; color: rgba(245,233,200,0.62); margin: 1.3rem 0 2.8rem; max-width: 580px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; line-height: 1.65; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
+    .btn-primary { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.18em; color: var(--ink); background: var(--gold); padding: 0.9rem 2.3rem; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; display: inline-block; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-whatsapp { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.15em; color: #fff; background: #25d366; padding: 0.9rem 2.3rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.55rem; transition: background 0.2s, transform 0.15s; }
+    .btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+
+    /* DIVIDER */
+    .divider { display: flex; align-items: center; gap: 1rem; padding: 0 2.5rem; margin: 0 auto; max-width: 800px; }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.35), transparent); }
+    .divider-icon { color: var(--gold); font-size: 1rem; opacity: 0.5; }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; padding: 5rem 2rem; }
+    .section-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.4em; color: var(--gold); text-align: center; margin-bottom: 0.8rem; opacity: 0.75; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 600; text-align: center; color: var(--gold-pale); margin-bottom: 0.5rem; line-height: 1.15; }
+    .section-desc { text-align: center; color: rgba(245,233,200,0.5); font-size: 1.08rem; font-style: italic; max-width: 540px; margin: 0 auto 3.5rem; line-height: 1.7; }
+
+    /* GALLERY */
+    #gallery { background: linear-gradient(to bottom, var(--ink), #110b03, var(--ink)); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.8rem; max-width: 1100px; margin: 0 auto; }
+    .gallery-card { position: relative; border: 1px solid rgba(201,168,76,0.15); overflow: hidden; background: #0e0904; transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s; }
+    .gallery-card:hover { transform: translateY(-7px); border-color: rgba(201,168,76,0.45); box-shadow: 0 22px 55px rgba(0,0,0,0.55), 0 0 30px rgba(201,168,76,0.07); }
+    .gallery-img-wrap { width: 100%; height: 200px; overflow: hidden; position: relative; background: #0a0602; display: flex; align-items: center; justify-content: center; }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; filter: sepia(15%) contrast(1.05); }
+    .gallery-card:hover .gallery-img-wrap img { transform: scale(1.07); }
+    .img-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; font-size: 5rem; background: radial-gradient(circle at 40% 40%, rgba(201,168,76,0.12), rgba(26,16,8,0.95)); }
+    .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 55%; background: linear-gradient(to top, rgba(10,6,2,0.9), transparent); }
+    .gallery-body { padding: 1.4rem 1.6rem 1.6rem; }
+    .gallery-era { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.28em; color: var(--gold); opacity: 0.7; margin-bottom: 0.4rem; }
+    .gallery-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--gold-pale); margin-bottom: 0.4rem; }
+    .gallery-desc { font-size: 0.92rem; color: rgba(245,233,200,0.5); line-height: 1.6; font-style: italic; margin-bottom: 1.1rem; }
+    .gallery-tag { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.12em; padding: 0.22rem 0.6rem; border: 1px solid rgba(46,107,94,0.5); color: #4ecba8; }
+
+    /* HOW IT WORKS */
+    #how { background: #0c0802; }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; }
+    .step-card { text-align: center; padding: 2.5rem 1.8rem; border: 1px solid rgba(201,168,76,0.1); background: rgba(201,168,76,0.02); position: relative; transition: border-color 0.3s; }
+    .step-card:hover { border-color: rgba(201,168,76,0.3); }
+    .step-num { font-family: 'Cinzel', serif; font-size: 3rem; color: rgba(201,168,76,0.1); font-weight: 600; display: block; margin-bottom: 0.5rem; line-height: 1; }
+    .step-icon { font-size: 2rem; display: block; margin-bottom: 0.8rem; }
+    .step-title { font-family: 'Cinzel', serif; font-size: 0.76rem; letter-spacing: 0.15em; color: var(--gold-pale); margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.95rem; color: rgba(245,233,200,0.5); line-height: 1.65; font-style: italic; }
+
+    /* TESTIMONIALS */
+    #testimonials { background: var(--ink); }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; max-width: 1050px; margin: 0 auto; }
+    .testi-card { background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(26,16,8,0.85) 70%); border: 1px solid rgba(201,168,76,0.14); padding: 2rem 2rem 1.8rem; position: relative; transition: border-color 0.3s, transform 0.3s; }
+    .testi-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-4px); }
+    .testi-quote { font-size: 3.5rem; color: rgba(201,168,76,0.2); font-family: 'Cormorant Garamond', serif; line-height: 0.8; margin-bottom: 0.5rem; display: block; }
+    .testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+    .testi-text { font-size: 1.05rem; color: rgba(245,233,200,0.72); line-height: 1.75; font-style: italic; margin-bottom: 1.5rem; }
+    .testi-footer { display: flex; align-items: center; gap: 0.9rem; border-top: 1px solid rgba(201,168,76,0.1); padding-top: 1.1rem; }
+    .testi-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, rgba(201,168,76,0.25), rgba(201,168,76,0.05)); border: 1px solid rgba(201,168,76,0.25); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .testi-name { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--gold-pale); display: block; margin-bottom: 0.2rem; }
+    .testi-location { font-size: 0.82rem; color: rgba(245,233,200,0.35); font-style: italic; }
+
+    /* ABOUT */
+    #about { background: #0e0904; }
+    .about-inner { max-width: 920px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 4.5rem; align-items: center; }
+    .about-visual { display: flex; align-items: center; justify-content: center; }
+    .about-coin-wrap { position: relative; width: 240px; height: 240px; }
+    .about-coin { width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle at 35% 35%, rgba(201,168,76,0.22), rgba(201,168,76,0.04)); border: 2px solid rgba(201,168,76,0.28); display: flex; align-items: center; justify-content: center; font-size: 5.5rem; box-shadow: 0 0 70px rgba(201,168,76,0.1); animation: coinPulse 4s ease-in-out infinite; }
+    @keyframes coinPulse { 0%,100% { box-shadow: 0 0 70px rgba(201,168,76,0.1); } 50% { box-shadow: 0 0 110px rgba(201,168,76,0.2); } }
+    .about-coin::before { content: ''; position: absolute; inset: 12px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.12); }
+    .about-text h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; color: var(--gold-pale); margin-bottom: 1.1rem; line-height: 1.2; }
+    .about-text h2 em { color: var(--gold); font-style: italic; }
+    .about-text p { color: rgba(245,233,200,0.6); line-height: 1.85; font-size: 1.05rem; margin-bottom: 1rem; }
+    .stats-row { display: flex; gap: 2rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.15); }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); display: block; }
+    .stat-label { font-size: 0.72rem; color: rgba(245,233,200,0.35); letter-spacing: 0.12em; font-family: 'Cinzel', serif; }
+
+    /* CATEGORIES */
+    #categories { background: linear-gradient(to bottom, var(--ink), #0c0802); }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.4rem; max-width: 1000px; margin: 0 auto; }
+    .cat-card { padding: 2rem 1.5rem; border: 1px solid rgba(201,168,76,0.1); text-align: center; background: rgba(201,168,76,0.015); cursor: pointer; transition: all 0.3s; text-decoration: none; }
+    .cat-card:hover { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.32); transform: translateY(-4px); }
+    .cat-icon { font-size: 2.4rem; display: block; margin-bottom: 0.9rem; }
+    .cat-name { font-family: 'Cinzel', serif; font-size: 0.76rem; letter-spacing: 0.15em; color: var(--gold-pale); margin-bottom: 0.35rem; }
+    .cat-count { font-size: 0.82rem; color: rgba(245,233,200,0.32); font-style: italic; }
+
+    /* CONTACT */
+    #contact { background: #0a0602; }
+    .contact-wrap { max-width: 680px; margin: 0 auto; }
+    .wa-banner { background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(37,211,102,0.04)); border: 1px solid rgba(37,211,102,0.25); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2.5rem; text-decoration: none; transition: border-color 0.25s, background 0.25s; }
+    .wa-banner:hover { border-color: rgba(37,211,102,0.5); background: rgba(37,211,102,0.1); }
+    .wa-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .wa-text strong { font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.15em; color: #4ecba8; display: block; margin-bottom: 0.25rem; }
+    .wa-text span { font-size: 0.95rem; color: rgba(245,233,200,0.55); font-style: italic; }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.25em; color: var(--gold); opacity: 0.7; }
+    .form-input, .form-select, .form-textarea { background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.18); color: var(--parchment); padding: 0.75rem 1rem; font-family: 'Cormorant Garamond', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; width: 100%; }
+    .form-select option { background: var(--ink); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: rgba(201,168,76,0.5); }
+    .form-textarea { resize: vertical; min-height: 130px; }
+    .form-submit { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--ink); background: var(--gold); border: none; padding: 1rem 2.5rem; cursor: pointer; transition: background 0.2s, transform 0.15s; align-self: flex-start; }
+    .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .contact-aside { margin-top: 3rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; border-top: 1px solid rgba(201,168,76,0.12); padding-top: 2.5rem; }
+    .contact-info { text-align: center; }
+    .contact-info-icon { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+    .contact-info-label { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.22em; color: var(--gold); opacity: 0.6; display: block; margin-bottom: 0.3rem; }
+    .contact-info-val { font-size: 0.88rem; color: rgba(245,233,200,0.55); font-style: italic; word-break: break-word; }
+    .contact-info-val a { color: inherit; text-decoration: none; }
+    .contact-info-val a:hover { color: var(--gold); }
+
+    /* FOOTER */
+    footer { background: #040200; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(201,168,76,0.08); flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold); letter-spacing: 0.15em; }
+    .footer-copy { font-size: 0.82rem; color: rgba(245,233,200,0.2); font-style: italic; }
+    .footer-hanzi { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; color: rgba(201,168,76,0.18); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { display: none; }
+      .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-visual { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-aside { grid-template-columns: 1fr; gap: 1rem; }
+      .stats-row { gap: 1.2rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .hanzi-deco { display: none; }
+      .wa-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    Rick Donald
+    <span>Asian Currency Buyer</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#gallery">What I Buy</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://wa.me/2348107403578" target="_blank" class="nav-cta">💬 WhatsApp Me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="coin-deco"></div>
+    <div class="coin-deco"></div>
+    <div class="coin-deco"></div>
+  </div>
+  <div class="hanzi-deco left">收</div>
+  <div class="hanzi-deco right">古</div>
+
+  <p class="hero-eyebrow">Trusted Buyer · Fair Prices · Worldwide</p>
+  <h1 class="hero-title">I Buy Old Asian<br><span>Coins & Banknotes</span></h1>
+  <p class="hero-sub">Do you have old Asian coins or banknotes collecting dust? I pay top, fair prices for genuine historical pieces — from Chinese dynasties to colonial-era currency across Asia.</p>
+  <div class="hero-btns">
+    <a href="https://wa.me/2348107403578" target="_blank" class="btn-whatsapp">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.826L.057 23.928l6.257-1.643A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.369l-.359-.213-3.714.975.99-3.617-.234-.371A9.787 9.787 0 012.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/></svg>
+      Chat on WhatsApp
+    </a>
+    <a href="#gallery" class="btn-primary">See What I Buy</a>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">✦</span><div class="divider-line"></div></div>
+
+<!-- WHAT I BUY -->
+<section id="gallery">
+  <p class="section-label reveal">Items Wanted</p>
+  <h2 class="section-title reveal">What I'm Buying</h2>
+  <p class="section-desc reveal">I actively seek these types of pieces. If you have any of these — or similar — contact me for a fair, honest valuation.</p>
+
+  <div class="gallery-grid">
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Qian_Long_Tong_Bao_obverse.jpg/320px-Qian_Long_Tong_Bao_obverse.jpg" alt="Qing Dynasty Cash Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">🪙</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">China · Qing Dynasty · 1644–1912</p>
+        <h3 class="gallery-name">Chinese Cash Coins</h3>
+        <p class="gallery-desc">Square-holed bronze & copper coins from the Qing and earlier dynasties. Tongbao, Yuanbao, and more.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Yuan_Shih-kai_Dollar_%28obverse%29.jpg/320px-Yuan_Shih-kai_Dollar_%28obverse%29.jpg" alt="Yuan Shikai Silver Dollar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">💴</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">Republic of China · 1912–1949</p>
+        <h3 class="gallery-name">Chinese Silver Dollars</h3>
+        <p class="gallery-desc">Yuan Shikai "Fatman Dollars", Sun Yat-sen coins, and other Republic-era silver pieces.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Meiji_10_sen_1909.jpg/320px-Meiji_10_sen_1909.jpg" alt="Meiji Era Japanese Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">🌸</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">Japan · Meiji–Showa · 1868–1945</p>
+        <h3 class="gallery-name">Japanese Empire Coins</h3>
+        <p class="gallery-desc">Meiji, Taisho, and early Showa-era silver and copper coins. Dragon designs highly prized.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Malaya_Japanese_Occupation_10_Dollars_1942.jpg/320px-Malaya_Japanese_Occupation_10_Dollars_1942.jpg" alt="Japanese Occupation Banknote" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">💵</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">Malaya / SE Asia · 1940–1945</p>
+        <h3 class="gallery-name">WWII Occupation Banknotes</h3>
+        <p class="gallery-desc">Japanese military currency issued in Malaya, Philippines, Burma, and the Dutch East Indies.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Straits_Settlements_1920_10_Cents.jpg/320px-Straits_Settlements_1920_10_Cents.jpg" alt="Straits Settlements Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">🦁</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">British Colonies · 1826–1946</p>
+        <h3 class="gallery-name">Colonial Asian Currency</h3>
+        <p class="gallery-desc">Straits Settlements, Hong Kong, British India, French Indochina, and Dutch Indies coins & notes.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+    <div class="gallery-card reveal">
+      <div class="gallery-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Joseon_mun.jpg/320px-Joseon_mun.jpg" alt="Korean Joseon Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-fallback">🏯</div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-body">
+        <p class="gallery-era">Korea · Joseon Dynasty · 1392–1897</p>
+        <h3 class="gallery-name">Korean Joseon Coins</h3>
+        <p class="gallery-desc">Sangpyong Tongbo and other Korean brass coins from the Joseon period. Square-hole cash coins.</p>
+        <span class="gallery-tag">✓ Actively Buying</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">✦</span><div class="divider-line"></div></div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label reveal">Simple Process</p>
+  <h2 class="section-title reveal">How to Sell to Me</h2>
+  <p class="section-desc reveal">Selling your old coins or banknotes is simple, safe, and completely obligation-free.</p>
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <span class="step-num">01</span>
+      <span class="step-icon">📸</span>
+      <p class="step-title">Send Photos</p>
+      <p class="step-desc">Take clear photos of your coins or banknotes — front, back, and any markings — and send via WhatsApp or email.</p>
+    </div>
+    <div class="step-card reveal">
+      <span class="step-num">02</span>
+      <span class="step-icon">🔍</span>
+      <p class="step-title">I Assess & Value</p>
+      <p class="step-desc">I personally review every piece and provide an honest, fair valuation within 24–48 hours. No obligation at all.</p>
+    </div>
+    <div class="step-card reveal">
+      <span class="step-num">03</span>
+      <span class="step-icon">🤝</span>
+      <p class="step-title">We Agree a Price</p>
+      <p class="step-desc">If you're happy with my offer, we agree a price. I respect your decision — no pressure, ever.</p>
+    </div>
+    <div class="step-card reveal">
+      <span class="step-num">04</span>
+      <span class="step-icon">💰</span>
+      <p class="step-title">You Get Paid</p>
+      <p class="step-desc">Payment is fast and secure via your preferred method. I handle worldwide shipping arrangements at my cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <p class="section-label reveal">From Previous Sellers</p>
+  <h2 class="section-title reveal">What People Say</h2>
+  <p class="section-desc reveal">Hundreds of sellers have trusted me with their inherited or collected pieces. Here are some of their stories.</p>
+  <div class="testi-grid">
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">I inherited a box of old Chinese coins from my grandfather and had no idea what they were worth. Rick was patient, knowledgeable, and gave me a fair price without me having to go anywhere. The WhatsApp process was so easy!</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👩</div>
+        <div><span class="testi-name">Mei Ling T.</span><span class="testi-location">Kuala Lumpur, Malaysia</span></div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">Had a collection of Meiji-era Japanese coins I wanted to sell. Rick identified every single piece and explained their history before making an offer. His price was generous and payment came through the very next day.</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👨</div>
+        <div><span class="testi-name">Takeshi M.</span><span class="testi-location">Osaka, Japan</span></div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">Found some old Malayan banknotes in my late father's belongings. Wasn't sure they had value — Rick told me they were WWII occupation notes worth good money and bought them at a very fair price. Truly honest and professional.</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👨</div>
+        <div><span class="testi-name">Ahmad R.</span><span class="testi-location">Penang, Malaysia</span></div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">I sold a Yuan Shikai silver dollar I had for years. Rick's valuation matched what I found in online research — he didn't try to lowball me at all. The whole process from first WhatsApp to payment took less than 3 days.</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👩</div>
+        <div><span class="testi-name">Linda C.</span><span class="testi-location">Singapore</span></div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">As someone who knew nothing about numismatics, I was worried about being taken advantage of. Rick was completely transparent, explained everything clearly, and made me feel very comfortable throughout the whole process.</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👩</div>
+        <div><span class="testi-name">Grace O.</span><span class="testi-location">Lagos, Nigeria</span></div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">Cleared out a whole collection of Straits Settlements and Hong Kong coins I had no use for. Rick bought the entire lot, handled all the paperwork, and even covered the international shipping. Couldn't be happier.</p>
+      <div class="testi-footer">
+        <div class="testi-avatar">👨</div>
+        <div><span class="testi-name">David Lim</span><span class="testi-location">Hong Kong</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><span class="divider-icon">✦</span><div class="divider-line"></div></div>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <p class="section-label reveal">All Types Welcome</p>
+  <h2 class="section-title reveal">I Buy Across All Asia</h2>
+  <p class="section-desc reveal">No collection too small or too large. If it's old and Asian, I want to hear from you.</p>
+  <div class="cat-grid">
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">🇨🇳</span><p class="cat-name">Chinese Coins</p><p class="cat-count">Cash, Silver Dollars, Republic Era</p></a>
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">🇯🇵</span><p class="cat-name">Japanese Coins</p><p class="cat-count">Meiji, Taisho, Showa Era</p></a>
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">🇰🇷</span><p class="cat-name">Korean Coins</p><p class="cat-count">Joseon Dynasty & Modern</p></a>
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">🏝️</span><p class="cat-name">Southeast Asian</p><p class="cat-count">Malaya, Indochina, Siam, NEI</p></a>
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">📜</span><p class="cat-name">Banknotes</p><p class="cat-count">Colonial, Occupation, Republic</p></a>
+    <a href="https://wa.me/2348107403578" target="_blank" class="cat-card reveal"><span class="cat-icon">💎</span><p class="cat-name">Rare & Graded</p><p class="cat-count">NGC / PCGS Certified Pieces</p></a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-coin-wrap">
+        <div class="about-coin">🪙</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h2>A Buyer You Can <em>Trust</em></h2>
+      <p>My name is Rick Donald and I have spent over a decade studying and collecting old Asian currency. I buy coins and banknotes from across China, Japan, Korea, Southeast Asia, and the former colonial territories.</p>
+      <p>I offer transparent, honest valuations based on real market knowledge. Whether you've found a single coin or an entire inherited collection, I treat every seller with respect and fairness — no pressure, no games.</p>
+      <p>I buy from sellers all around the world. Shipping is always arranged safely and at my expense.</p>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Pieces Bought</span></div>
+        <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Countries</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Years Active</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Reach Out</p>
+  <h2 class="section-title reveal">Contact Me</h2>
+  <p class="section-desc reveal">Send photos of what you have and I'll come back with an honest offer. No obligation whatsoever.</p>
+
+  <div class="contact-wrap">
+    <a href="https://wa.me/2348107403578" target="_blank" class="wa-banner reveal">
+      <span class="wa-icon">💬</span>
+      <div class="wa-text">
+        <strong>Quickest Response via WhatsApp</strong>
+        <span>Send your photos directly to +234 810 740 3578 — I typically reply within a few hours.</span>
+      </div>
+    </a>
+
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input class="form-input" type="text" placeholder="Full name" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" placeholder="your@email.com" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">What Do You Have?</label>
+        <select class="form-select">
+          <option>Old Chinese coins</option>
+          <option>Japanese coins or banknotes</option>
+          <option>Southeast Asian coins / banknotes</option>
+          <option>WWII occupation currency</option>
+          <option>Colonial era currency</option>
+          <option>Korean coins</option>
+          <option>Mixed Asian collection</option>
+          <option>Not sure — need identification</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell Me More</label>
+        <textarea class="form-textarea" placeholder="Describe what you have — quantity, condition, any markings you can see. You can also email photos to Rickdonaldoldcurrency@gmail.com"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Message →</button>
+    </form>
+
+    <div class="contact-aside reveal">
+      <div class="contact-info">
+        <span class="contact-info-icon">📧</span>
+        <span class="contact-info-label">Email</span>
+        <span class="contact-info-val"><a href="mailto:Rickdonaldoldcurrency@gmail.com">Rickdonaldoldcurrency@gmail.com</a></span>
+      </div>
+      <div class="contact-info">
+        <span class="contact-info-icon">💬</span>
+        <span class="contact-info-label">WhatsApp</span>
+        <span class="contact-info-val"><a href="https://wa.me/2348107403578" target="_blank">+234 810 740 3578</a></span>
+      </div>
+      <div class="contact-info">
+        <span class="contact-info-icon">🌍</span>
+        <span class="contact-info-label">Buys From</span>
+        <span class="contact-info-val">Worldwide — shipping at my cost</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Rick Donald · Asian Currency Buyer</span>
+  <span class="footer-copy">© 2025 Rick Donald. All rights reserved.</span>
+  <span class="footer-hanzi">古幣收</span>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 55);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = "Message Sent! I'll be in touch ✦";
+    btn.style.background = '#2e6b5e';
+    btn.style.color = '#f5e9c8';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.style.color = '';
+      e.target.reset();
+    }, 4000);
+  }
+</script>
+</body>
+</html>
